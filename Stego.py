@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    Описание модуля
-    
-    TODO
-    
-    Fraudmon
+    Этот модуль содержит функции для построения акротекстов из предварительно построенных
     create in: 2014-08-06   
 """
 # TODO работы много...
@@ -152,11 +148,22 @@ def __step (platform, keys, keys_letter,  letter, textlist, c, error_words=None,
 
 def MakeAcrotext(platform, message, c=10, ret_list=False):
     """
-
-    :param platform: построенная цепь маркова
+    Функция создания акротекста.
+    ВАЖНО: в данный момент функция работает только с кирилическими русскими буквами
+    Function for creation acrotext.
+    ATTENTION: You can use only russian letters!
+    :param platform:
+    построенная цепь маркова (платформа). Используйте LoadPlatform для построения платформы
+    build Markov chain
     :param message:
-    :param c: параметр, показывающий со скольки слов можно ставить '.'
-    :return: возвращает текст, на перывх буквах которых стоит текст message
+    искомое сообщение, из которого следует создать акротекст
+    message for acrotext constructing
+    :param c:
+    параметр, показывающий со скольки слов можно ставить '.'
+    this parameter mean minimal numbers of word in one sentence.
+    :return:
+    возвращает акротекст (текст, где первые буквы -- буквы из message)
+    return acrotext
     """
 
 
@@ -211,17 +218,29 @@ def MakeAcrotext(platform, message, c=10, ret_list=False):
             rettext += u' '
     return rettext
 
-def test():
+#Различные параметры c алгоритма для тестирования
+DEFAULT_C_TEST_STEGO_LIST = [8, 10, 12, 20]
 
-    message = u'привет мир'
-
-
+def TestMarkovChainAcro(message, platform_path, c_list):
+    """
+    Функция акростеганографии.
+    :param message:
+    сообщение, из которого необходимо создать акротекст
+    message for acrosteganography
+    :param platform_path:
+    путь к платфроме
+    platform path
+    :param c_list:
+    список различных параметров c для тестирования
+    list of some c parameter for testing
+    :return:
+    возвращает список полученных акротекстов
+    """
     random.seed(message)
-    platform = LoadChain(PLATFORM_PATH)
+    platform = LoadChain(platform_path)
 
-    #textlist = list()
-
-    for c in [8, 10, 12, 20]:
+    list_text = list()
+    for c in c_list:
         text = MakeAcrotext(platform, message, c=c)
 
         print u"return text. c=@c@ message='@m@'::"\
@@ -231,14 +250,17 @@ def test():
         text2 = text.replace(u'.', u'.\n')
         print text2
         print "::::"
+        list_text.append(text2)
 
-
-    pass
+    return list_text
 ##############
 if __name__ == '__main__':
+    #please write YOU message in the down line
+    message = u'привет мир'
+
     begin = datetime.datetime.now()
-    print "Stego.test() begin" + str(begin)
-    test()
+    print u"TestMarkovChainAcro begin", str(begin), "message=", message
+    TestMarkovChainAcro(message, platform_path=PLATFORM_PATH, c_list=[8, 10, 12, 20])
     end = datetime.datetime.now()
     print "All is done" + str(end)
     print "Spend time:" + str(end-begin)
