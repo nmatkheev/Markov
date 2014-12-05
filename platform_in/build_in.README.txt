@@ -1,0 +1,8 @@
+This is folder for platform building.
+
+Put all platform-sourse file here.
+(You can put folder with subfolders) 
+
+Please, keep in the mind feasible file types:
+1) *.fb
+2) *.txt

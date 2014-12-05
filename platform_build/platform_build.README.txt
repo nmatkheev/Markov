@@ -1,0 +1,5 @@
+This is file of bulding platform.
+
+1) Run BuildPlatform.py
+2) Wait
+3) see this folder
