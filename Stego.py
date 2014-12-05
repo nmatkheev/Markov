@@ -14,7 +14,7 @@ from MarkoffLib import LoadChain
 
 import sys
 
-PLATFORM_PATH = u'platform_build\\dantsova.d0.plf'
+PLATFORM_PATH = u'platform_build\\dantsova.plf'
 
 import random
 
@@ -238,6 +238,9 @@ def TestMarkovChainAcro(message, platform_path, c_list):
     """
     random.seed(message)
     platform = LoadChain(platform_path)
+    if not platform:
+        error = u"Not exist file " + platform_path
+        raise EnvironmentError(error)
 
     list_text = list()
     for c in c_list:
@@ -256,7 +259,7 @@ def TestMarkovChainAcro(message, platform_path, c_list):
 ##############
 if __name__ == '__main__':
     #please write YOU message in the down line
-    message = u'привет мир'
+    message = u'в недрах тундры выдры в гетрах тырят в ведра ядра кедра'
 
     begin = datetime.datetime.now()
     print u"TestMarkovChainAcro begin", str(begin), "message=", message

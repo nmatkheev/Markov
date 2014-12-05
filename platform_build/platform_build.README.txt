@@ -1,5 +1,13 @@
-This is file of bulding platform.
+This is DEFAULT folder for building platform
 
-1) Run BuildPlatform.py
-2) Wait
-3) see this folder
+You can make yourself platform, using BuldPlatform.py
+But if you download all books of Dariya Dontsova,
+building time may be... a lot of excitatory...
+
+You can unzip dantsova and run Stego.py for see, how algorithm work.
+
+We give name dAntsova (not dontsova) for name-disclaimer participle ^_^
+You can use another books for building platform, BUT they need be properties:
+1) books need have identical style of a statement (one autor is the best resolve)
+2) you need VERY BIG count of books 
+3) style of a narration has to be sensible, but as much as possible awful!!
