@@ -239,11 +239,14 @@ def GetTextFromFB2(path, uncorrect_symbols=None):
             print "ERROR in <p>="+p.toxml
     #print 'EEE'
     return alltext
-def GetFiles(path=u'platform_in'):
+def GetFiles(path):
     """
-    Get all files from path
-
-    return list of all files
+    Данная функция перечисляет всевозможные файлы внутри папки path,
+    а так же все файлы внутри ее подпапок
+    :param path:
+    папка, в которой нужно найти все файлы
+    :return:
+    возвращает списко всех путех
     """
     def __is_folder(param):
         if '.' in param:
@@ -273,10 +276,18 @@ def GetFiles(path=u'platform_in'):
         return list()
 
     listfiles = list()
-    __get_iter (path, listfiles)
+    __get_iter(path, listfiles)
 
+    listfiles_ret = list()
+    for i in range(len(listfiles)):
+        if u"build_in.README" in listfiles[i]:
+            continue
+        if u'.fb2' not in listfiles[i] and u'.txt' not in listfiles[i]:
+            error = "ERROR: file @1@ have uncorrect format!"
+            raise EnvironmentError(error)
+        listfiles_ret.append(listfiles[i])
 
-    return listfiles
+    return listfiles_ret
 
 
 def MakeReportAndSave (path, chain, good_books, bad_books, begintime, endtime, uncorrect):
@@ -390,30 +401,43 @@ def BuldPlatform_Chunk(i, files, path):
         pass
     print 'All work to buld platform is END!'
 
-def BuildPlatform(path): #, print_to_console_info=DEFAULT_PRINT_CONSOLE_INFO):
+def BuildPlatform(path_in, path_out, count_chunks=1): #, print_to_console_info=DEFAULT_PRINT_CONSOLE_INFO):
+    """
+    Данная функция создает платформу
+    This function make а platform
+    :param path_in:
+    Путь, в котором лежать *.txt или *.fb файлы для постройки платформы
+    folder of *.fb and|or *.txt files for platphorm build.
+    :param path_out:
+    Путь выходных файлов. Вместо '@i@' подставляется номер выходного файла
+    path of output files name. '@i@' will be replaced by number of chunk
+    :param count_chunks:
+    Количество кусков (чанков) на которые разобъется платформа
+    Count of platform chunks
+    :return:
     """
 
-    """
-    files = GetFiles()
+    #
+    files = GetFiles(path_in)
 
     # TODO
     #files = files[0:11]
 
     #количество "кусков", из которых
-    COUNT_CHUNK = 1
+    COUNT_CHUNK = count_chunks
 
 
     step = len(files)/COUNT_CHUNK
     files_chunklist = list()
     for i in range(COUNT_CHUNK):
-        if i<COUNT_CHUNK-1:
+        if i < COUNT_CHUNK-1:
             files_chunk = files[i*step: (i+1)*step]
         else:
             files_chunk = files[i*step:]
         files_chunklist.append(files_chunk)
 
     for i in range(COUNT_CHUNK):
-        path_chunk = path\
+        path_chunk = path_out\
             .replace(u'@i@', unicode(i))
         BuldPlatform_Chunk(i, files_chunklist[i] ,path_chunk)
 
@@ -423,5 +447,6 @@ def BuildPlatform(path): #, print_to_console_info=DEFAULT_PRINT_CONSOLE_INFO):
     #print 'Ed'
 ############
 if __name__ == "__main__":
-    BuildPlatform(PLATFORM_PATH)
+    print "Run buld platform  ", datetime.datetime.now()
+    BuildPlatform(path_in=u'platform_in', path_out=PLATFORM_PATH, count_chunks=2)
 
