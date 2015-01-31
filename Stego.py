@@ -9,13 +9,13 @@
 __author__ = 'Fraudmon'
 
 import datetime
+import os
 
 from MarkoffLib import LoadChain
 
 import sys
 
-PLATFORM_PATH = u'platform_build\\dantsova.plf'
-
+PLATFORM_PATH = os.path.join("platform_build","dantsova.plf")
 import random
 
 def __step (platform, keys, keys_letter,  letter, textlist, c, error_words=None, depth=0):
