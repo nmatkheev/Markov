@@ -1,0 +1,24 @@
+<h3>ACROSTEGO</h3>
+
+<script>
+	function sendform(){
+		var textfield = document.getElementById('textfield');
+		var text = textfield.value;
+		var answerfield = document.getElementById('answer');
+		
+		var xhr = new XMLHttpRequest();
+		var params = 'text=' + encodeURIComponent(text);
+		xhr.open("POST", 'acrstg/', true)
+		xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState != 4) return;
+			answerfield.innerHTML = xhr.responseText; 
+			alert(xhr.responseText);
+		}
+		xhr.send(params);
+	}
+</script>
+
+<textarea id="textfield"></textarea>
+<input type="submit" value="Submit" onclick='sendform()' />
+<p id="answer">*тут будет акротекст*</p>

@@ -1,0 +1,17 @@
+<h3>ACROSTEGO{{ swearing }}!!!!1</h3>
+
+<script>
+	function sendform(){
+		var form = getElementByID('textForm');
+		var xhr = new XMLHttpRequest();
+		var params = 'text=' + encodeURIComponent(form);
+
+	}
+</script>
+
+<form action="" method="post" id="textForm">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" id="submitButton" onclick = 'sendform()' />
+</form>
+<h2>{{ answer }} : {{ text }}</h2>
