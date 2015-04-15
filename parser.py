@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# TODO "для последующей обработки виде" -- дальше что?..
 """
 Модуль для загрузки текстов из сети и представления их в удобном для последующей обработки виде
 
@@ -8,9 +9,10 @@
 from urllib2 import urlopen, HTTPError
 import codecs
 
-wikirandom = 'https://ru.wikipedia.org/wiki/Служебная:Случайная_страница'
+wiki_random = 'https://ru.wikipedia.org/wiki/Служебная:Случайная_страница'
 
-def downloadHtml(url = wikirandom, path='./unnamed.html'):
+
+def downloadHtml(url=wiki_random, path='./unnamed.html'):
     """
     Функция загружает страницу из сети и сохраняет ее по заданному адресу.
     :param url: адрес файла в сети. По умолчанию - случайная страница ru.wikipedia.org
@@ -20,19 +22,21 @@ def downloadHtml(url = wikirandom, path='./unnamed.html'):
     if '://' not in url:
         url = 'http://' + url
 
+    remote_file = None
     try:
-        remotefile = urlopen(url)
+        remote_file = urlopen(url)
     except HTTPError as error:
-        if remotefile:
-            remotefile.close()
+        if remote_file:
+            remote_file.close()
         print 'HTTP Error', error.code, ':', error.msg, '(page:', url, ')'
         return None
 
-    localfile = open(path, 'w')
-    for line in remotefile:
-        localfile.write(line)
-    localfile.close()
+    local_file = open(path, 'w')
+    for line in remote_file:
+        local_file.write(line)
+    local_file.close()
     return path
+
 
 def html2text(html):
     """
@@ -44,34 +48,34 @@ def html2text(html):
     """
     position = 0
     text = ''
-    pStart = html.find('<p>',position)
-    pEnd = html.find('</p>', position)
+    p_start = html.find('<p>', position)
+    p_end = html.find('</p>', position)
 
-    while pStart != -1 and pEnd != -1:
-        if pEnd < pStart + 3:
+    while p_start != -1 and p_end != -1:
+        if p_end < p_start + 3:
             return text
-        rawParagraph = html[pStart+3:pEnd]
+        raw_paragraph = html[p_start+3:p_end]
 
-        position = pEnd + 4
-        pStart = html.find('<p>',position)
-        pEnd = html.find('</p>', position)
+        position = p_end + 4
+        p_start = html.find('<p>', position)
+        p_end = html.find('</p>', position)
 
-        if (u'•' in rawParagraph) or (u'|' in rawParagraph) or (u'Координаты' in rawParagraph):
+        if (u'•' in raw_paragraph) or (u'|' in raw_paragraph) or (u'Координаты' in raw_paragraph):
             continue
 
         buff = ''
-        braceCounter = 1
-        for c in rawParagraph:
-            if c in ('<','{','(','['):
-                braceCounter-=1
-            elif c in ('>','}',')',']'):
-                braceCounter+=1
+        brace_counter = 1
+        for c in raw_paragraph:
+            if c in ('<', '{', '(', '['):
+                brace_counter -= 1
+            elif c in ('>', '}', ')', ']'):
+                brace_counter += 1
             else:
-                if braceCounter > 0:
+                if brace_counter > 0:
                     buff += c
 
-        buff = _delSpecChars(buff)
-        buff = _replacePunctuation(buff)
+        buff = __delSpecChars(buff)
+        buff = __replacePunctuation(buff)
 
         if len(buff) > 100:
             text += buff.lower() + ' '
@@ -80,50 +84,54 @@ def html2text(html):
 
 
 def textByWord(text):
+    # TODO param и return описать
     """
     Разбивает текст по 1 слову на строку. Знаки препинания приравниваются к словам.
+    :param text:
+    :return:
     """
     words = text.split()
-    newText = ''
+    new_text = ''
     for word in words:
-        newText+= word + '\n'
-    return newText
+        new_text += word + '\n'
+    return new_text
 
-def _replacePunctuation(str):
-    str = str.replace (u"«", u" ")
-    str = str.replace (u"»", u" ")
-    str = str.replace (u"'", u" ")
-    str = str.replace (u'"', u" ")
-    str = str.replace (u"(", u" ")
-    str = str.replace (u")", u" ")
 
-    str = str.replace (u".", u" . ")
-    str = str.replace (u",", u" , ")
-    str = str.replace (u"?", u" . ")
-    str = str.replace (u"!", u" . ")
+def __replacePunctuation(str_):
+    str_ = str_.replace(u"«", u" ")
+    str_ = str_.replace(u"»", u" ")
+    str_ = str_.replace(u"'", u" ")
+    str_ = str_.replace(u'"', u" ")
+    str_ = str_.replace(u"(", u" ")
+    str_ = str_.replace(u")", u" ")
 
-    str = str.replace (u":", u" , ")
-    str = str.replace (u";", u" , ")
-    str = str.replace (u"—", u" — ") #исправить здесь, если тире не нужно в конечном тексте
-    str = str.replace (u"\n", u".")
+    str_ = str_.replace(u".", u" . ")
+    str_ = str_.replace(u",", u" , ")
+    str_ = str_.replace(u"?", u" . ")
+    str_ = str_.replace(u"!", u" . ")
 
-    return str
+    str_ = str_.replace(u":", u" , ")
+    str_ = str_.replace(u";", u" , ")
+    str_ = str_.replace(u"—", u" — ")  # исправить здесь, если тире не нужно в конечном тексте
+    str_ = str_.replace(u"\n", u".")
 
-def _delSpecChars(str):
-    pos = str.find('&#')
+    return str_
+
+
+def __delSpecChars(str_):
+    pos = str_.find('&#')
     while pos != -1:
-        semicolon = str.find(';',pos)
-        str = str[:pos] + str[semicolon+1:]
-        pos = str.find('&#')
-    return str
-
+        semicolon = str_.find(';', pos)
+        str_ = str_[:pos] + str_[semicolon+1:]
+        pos = str_.find('&#')
+    return str_
 
 
 if __name__ == '__main__':
-    downloadHtml(path = './ololo.html')
+    downloadHtml(path='./ololo.html')
     htmlPage = codecs.open('./ololo.html', 'r', 'utf-8').read()
-    #out = codecs.open('out.txt', 'w', 'utf-8')
+    # out = codecs.open('out.txt', 'w', 'utf-8')
     pureText = html2text(htmlPage)
-    #out.write(byWord(pureText))
-    #out.close()
+    # out.write(byWord(pureText))
+    # out.close()
     print textByWord(pureText)
