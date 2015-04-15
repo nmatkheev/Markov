@@ -10,13 +10,172 @@
 import sys
 import datetime
 from time import sleep
-
+import random
 
 # TODO Здесь должны быть настройки. Логин, пароль, ip, порт
 # from settings import ... ... ... ...
 
 # TODO Написать свои имена тут
-__author__ = 'Pavel|...'
+__author__ = 'PavelMSTU|...|...'
+
+
+def SetTask(text, akro_text=None, full_text=None):
+    # TODO написать имя коллекции вместо ...
+    """
+    Данная функция добавляет задание в Mongo
+    в коллекцию ... ... .
+    :param text: текст, который следует добавить
+    :param akro_text: текст, который уже был предварительно сформирован
+    :param full_text: полный текст, который имеет оконцовку в виде текста text
+    :return:
+    возвращает _id задания по которому можно будет найти
+    задание
+    """
+
+    if not isinstance(text, unicode):
+        error = 'type(text) must be unicode, not {0}'.format(type(text))
+        raise AttributeError(error)
+
+    error = 'NotImplementedError'
+    raise NotImplementedError(error)
+    _id = 123123
+    return _id
+
+
+def GetTask(_id):
+    # TODO написать имя коллекции вместо ...
+    """
+    Данная функция проводит следующие дейстивия:
+    1) в коллекции ... ищет запись ответа с указанным _id
+    2) если запись еще не обработана, то возвращает None, None
+    3) если запись уже обработана, то возвращает err, mess;
+    где err -- возникщая ошибка, mess - искомое сообщение
+    :param _id: _id в коллекции ...
+    :return:
+    кортеж двух величин: err, mess:
+    err -- возникшая ошибка. Возвращает None, если ошибка не возникла
+    mess -- возвращаемый текст типа unicode
+    """
+
+    error = 'NotImplementedError'
+    raise NotImplementedError(error)
+    err = None
+    mess = u'В недрах тундры выдры в гетрах'
+    return err, mess
+
+
+# Словарь, используемый в функциях SetTaskTest и GetTaskTest.
+# после удаления функций SetTaskTest и GetTaskTest так же должен быть удален
+__test_task_dict = dict()
+
+
+def SetTaskTest(text, akro_text=None, full_text=None, sec_spend_time=10):
+    """
+    Тестовая функция для написания WEB-шкурки.
+
+    После корректной работы SetTask и GetTask
+    и их тестирования данная функция должна быть удалена.
+    :param text: сообщение, для которого следует выполнить акротекст
+    :param akro_text: текст, который уже был предварительно сформирован.
+    В тестовой версии не используются
+    :param full_text: полный текст, который имеет оконцовку в виде текста text
+    В тестовой версии не используются
+    :param sec_spend_time: время ожидания в секундах.
+    :return:
+    Возвращяет _id, который представляет собой якобы _id коллекции.
+    """
+    global __test_task_dict
+
+    if not isinstance(text, unicode):
+        error = 'type(text) must be unicode, not {0}'.format(type(text))
+        raise AttributeError(error)
+
+    _id = random.randint(0, 1000000)
+
+    time_end_work = datetime.datetime.now() + datetime.timedelta(seconds=sec_spend_time)
+    task = text
+    __test_task_dict[_id] = (time_end_work, task)
+    return _id
+
+
+def GetTaskTest(_id):
+    """
+    Функция для получения ответа по указанному _id
+
+    После корректной работы SetTask и GetTask
+    и их тестирования данная функция должна быть удалена.
+
+    Выполняет следующие действия:
+    1) в словаре __test_task_dict ищет запись с ключем _id
+    2) если запись еще не обработана, то возвращает None, None
+    3) если запись может быть обработана, то обрабатывает её и возвращает err, mess;
+    где err -- возникщая ошибка, mess - искомое сообщение
+    :param _id: _id в коллекции ...
+    :return:
+    кортеж двух величин: err, mess:
+    err -- возникшая ошибка. Возвращает None, если ошибка не возникла
+    mess -- возвращаемый текст типа unicode
+    """
+    def __TestMakeAnsText(text):
+        dict_char = {
+            u'а': u'ахатина',
+            u'б': u'бырр',
+            u'в': u'вентерь',
+            u'г': u'габбро',
+            u'д': u'дупель',
+            u'е': u'евхаристия',
+            u'ё': u'ёхор',
+            u'ж': u'жалейка',
+            u'з': u'забрало',
+            u'и': u'изюбр',
+            u'й': u'йох',
+            u'к': u'кьёккенмединги',
+            u'л': u'ллойдия',
+            u'м': u'метранпаж',
+            u'н': u'нефоскоп',
+            u'о': u'ойнохоя',
+            u'п': u'палимпсет',
+            u'р': u'рокада',
+            u'с': u'синекдоха',
+            u'т': u'терпентин',
+            u'у': u'убихинон',
+            u'ф': u'флоэма',
+            u'х': u'хрущ',
+            u'ц': u'церападус',
+            u'ч': u'чадородие',
+            u'ш': u'шпрехштальмейстер',
+            u'щ': u'щетинозуб',
+            u'ы': u'Ыджидпарма',
+            u'э': u'эхинопс',
+            u'ю': u'ююба',
+            u'я': u'ястык',
+            u'.': u'.',
+            u'$': u'люди ищут работу, которая им не нравиться, чтобы заработать деньги на вещи, которые им не нужны',
+        }
+        ret = u""
+        for c in text:
+            if c in dict_char:
+                ret += dict_char[c] + u" "
+        return ret
+
+
+    global __test_task_dict
+
+    if _id not in __test_task_dict:
+        error = '_id={0} not have in __test_task_dict!'.format(_id)
+        return error, None
+
+    time_, text = __test_task_dict[_id]
+    if datetime.datetime.now() < time_:
+        # Запись пока еще не готова.
+        return None, None
+
+    # Следует удалить ключ, т.к. задание обработано.
+    __test_task_dict.pop(_id)
+
+    akro_text = __TestMakeAnsText(text)
+
+    return None, akro_text
 
 # TODO этой функции в данном модуле не место -- перенести в модуль ...
 def PearList2PearListCount (pearlist):
@@ -30,6 +189,8 @@ def PearList2PearListCount (pearlist):
     """
     error = "Функция пока не реализована"
     raise NotImplementedError(error)
+
+
 # TODO этой функции в данном модуле не место -- перенести в модуль ...
 def PearListCount2PearList (pearlistcount):
     """
@@ -44,6 +205,7 @@ def PearListCount2PearList (pearlistcount):
     """
     error = "Функция пока не реализована"
     raise NotImplementedError(error)
+
 
 # TODO этой функции в данном модуле не место -- перенести в модуль ...
 def Text2PearList(text, is_count=False):
@@ -63,6 +225,7 @@ def Text2PearList(text, is_count=False):
     """
     error = "Функция пока не реализована"
     raise NotImplementedError(error)
+
 
 def InsertWords(pear_or_pearlist):
     """
@@ -91,6 +254,7 @@ def InsertWords(pear_or_pearlist):
 
     # TODO Написать функцию
 
+
 def GetNextWordList(word, letter=None, letter_position=1):
     # TODO дописать ссылки вместо ...
     """
@@ -110,6 +274,7 @@ def GetNextWordList(word, letter=None, letter_position=1):
     error = "Функция пока не реализована"
     raise NotImplementedError(error)
 
+
 def GetCount(pear):
     """
     Для пары (слово, следующее слово) данная функция возвращает количество раз,
@@ -119,6 +284,7 @@ def GetCount(pear):
     """
     error = "Функция пока не реализована"
     raise NotImplementedError(error)
+
 
 def Enrichment(count=None):
     """
@@ -158,8 +324,30 @@ def __test():
         print error
 
 
+def __test_SetGet():
+    """
+    Функция для тестирования
+    :return:
+    """
+
+    text = u'быть знаменитым некрасиво, не это подымает ввысь.'
+    print u"input:{0}".format(text)
+
+    _id = SetTaskTest(text)
+    akro_text = None
+    while akro_text is None:
+        err, akro_text = GetTaskTest(_id)
+        if err:
+            print "Error:", err
+        elif akro_text is None:
+            print "Текст еще не готов ({0})".format(datetime.datetime.now())
+        sleep(1)
+    print u"output:{0}".format(akro_text)
+
 if __name__ == "__main__":
 
-    print "TEST mongolib " + str(datetime.datetime.now())
-    sleep(3)
-    __test()
+    # print "TEST mongolib " + str(datetime.datetime.now())
+    # sleep(3)
+    # __test()
+
+    __test_SetGet()

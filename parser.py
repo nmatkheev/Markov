@@ -9,6 +9,9 @@
 from urllib2 import urlopen, HTTPError
 import codecs
 
+# TODO Автор, яви себя миру!
+__author__ = '...'
+
 wiki_random = 'https://ru.wikipedia.org/wiki/Служебная:Случайная_страница'
 
 
